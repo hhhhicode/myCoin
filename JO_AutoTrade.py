@@ -38,7 +38,7 @@ print("autotrade start")
 
 # Best k를 구하기
 def get_ror(k=0.5):
-    df = pyupbit.get_ohlcv("KRW-BTC", interval='minute240', count=21)
+    df = pyupbit.get_ohlcv("KRW-BTC", interval='day', count=14)
     df['range'] = (df['high'] - df['low']) * k
     df['target'] = df['open'] + df['range'].shift(1)
 
