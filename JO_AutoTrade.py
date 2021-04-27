@@ -59,6 +59,7 @@ def get_BestK():
             bestK = k
     return bestK
 
+isBuy = False
 
 # 자동매매 시작
 while True:
@@ -70,14 +71,16 @@ while True:
         if start_time < now < end_time - datetime.timedelta(seconds=10):
             target_price = get_target_price("KRW-BTC", get_BestK())
             current_price = get_current_price("KRW-BTC")
-            if target_price < current_price:
-                krw = round(get_balance("KRW") / 5)
-                if krw > 5000:
-                    upbit.buy_market_order("KRW-BTC", krw*0.9995)
+            if isBuy == False:
+                if target_price < current_price:
+                    krw = round(get_balance("KRW") / 5)
+                    if krw > 5000:
+                        upbit.buy_market_order("KRW-BTC", krw*0.9995)
         else:
-            btc = get_balance("KRW-BTC")
-            if btc * pyupbit.get_current_price("KRW-BTC") > 5000:
-                upbit.sell_market_order("KRW-BTC", btc*0.9995)
+            if isBuy == True:
+                btc = get_balance("KRW-BTC")
+                if btc * pyupbit.get_current_price("KRW-BTC") > 5000:
+                    upbit.sell_market_order("KRW-BTC", btc*0.9995)
         time.sleep(1)
     except Exception as e:
         print(e)
